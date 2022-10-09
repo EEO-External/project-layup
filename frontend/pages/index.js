@@ -7,14 +7,13 @@ import Item from '../components/Item';
 const Home = () => {
   const [items, setItems] = useState([
     { weight: 2.1, name: 'Item 1', url: "https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cGFudHN8ZW58MHx8MHx8&auto=format&fit=crop&w=900&q=60" },
-    { weight: 3, name: 'Item 2', url: "" },
-    { weight: 7.2, name: 'Item 3', url: "" },
-    { weight: 3, name: 'Item 4', url: "" },
-    { weight: 5, name: 'Item 5', url: "" },
+    { weight: 3, name: 'Item 2', url: "https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8aG9vZGllfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60" },
+    { weight: 7.2, name: 'Item 3', url: "https://images.unsplash.com/photo-1604176354204-9268737828e4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8dHJvdXNlcnN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" },
+    { weight: 3, name: 'Item 4', url: "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c2hvZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" },
+    { weight: 5, name: 'Item 5', url: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8c2hpcnR8ZW58MHx8MHx8&auto=format&fit=crop&w=800&q=60" },
   ]);
 
   const [total, setTotal] = useState(0);
-  const [weight, setWeight] = useState(0);
 
   const handlePost = () => {
     fetch('/bag', {
@@ -24,7 +23,7 @@ const Home = () => {
       },
       body: JSON.stringify({ total }),
     }).then((res) => res.json())
-    .catch((error) => console.error('Error:', error))
+      .catch((error) => console.error('Error:', error))
   }
 
   return (
@@ -46,36 +45,22 @@ const Home = () => {
             </div>
             <div class="col-4 border-start border-dark mt-2">
               {items.map((item) => (
-                <div>
-                  <Item weight={item.weight} url={item.url} setTotal={setTotal} total={total}/>
+                <div class="border-bottom mb-2">
+                  <Item weight={item.weight} url={item.url} setTotal={setTotal} total={total} />
                 </div>
               ))}
             </div>
 
           </div>
         </div>
-        <div class="ms-5">
-          <h2>Weight: {total} lbs</h2>
-        </div>
-        
-
-
-        {/* <Tab.Group>
-          <div class="container d-flex justify-content-center align-items-center border-bottom border-2 p-1">
-            <Tab.List>
-              <Tab class="btn fs-2">ACCOUNT SUMMARY</Tab>
-              <Tab class="btn fs-2">PROMOTIONS</Tab>
-              <Tab class="btn fs-2">WALLET</Tab>
-            </Tab.List>
-          </div>
-          <Tab.Panels>
-            <Tab.Panel>Content 1</Tab.Panel>
-            <Tab.Panel>Content 2</Tab.Panel>
-            <Tab.Panel>Content 3</Tab.Panel>
-          </Tab.Panels>
-
-        </Tab.Group> */}
-
+        {total < 50 &&
+          <div class="ms-5">
+            <h2>Weight: {total} lbs</h2>
+          </div>}
+          {total > 50 &&
+          <div class="ms-5">
+            <h2 class="text-danger">Weight: {total} lbs - OVERWEIGHT</h2>
+          </div>}
       </main>
     </div>
   )
