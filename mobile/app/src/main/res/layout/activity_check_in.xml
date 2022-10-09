@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CheckIn">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvBagDesc"
+        android:text="Bag "
+        android:textSize="35sp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+
+    <TextView
+        android:id="@+id/tvBagNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:ems="10"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tvBagDesc"
+        app:layout_constraintTop_toTopOf="@id/tvBagDesc"
+        app:layout_constraintBottom_toBottomOf="@id/tvBagDesc"
+        />
+
+    <EditText
+        android:id="@+id/etBagId"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:hint="Enter Bag Id"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:padding="10dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvBagDesc"
+        app:layout_constraintStart_toStartOf="@id/tvBagDesc"
+
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Weight"
+        android:id="@+id/btnGetWeight"
+        android:backgroundTint="@color/blue"
+        android:textColor="@color/white_2"
+        app:layout_constraintStart_toEndOf="@id/etBagId"
+        app:layout_constraintBottom_toBottomOf="@id/etBagId"
+        android:layout_marginStart="30dp"/>
+
+    <EditText
+        android:id="@+id/etBagWeight"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Weight(lbs)"
+        android:inputType="text"
+        android:textSize="24sp"
+        android:padding="10dp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintStart_toStartOf="@id/etBagId"
+        app:layout_constraintTop_toBottomOf="@id/etBagId"
+        />
+
+    <EditText
+        android:id="@+id/tvBagFee"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textSize="24sp"
+        android:padding="10dp"
+        android:backgroundTint="@color/white"
+        android:hint="50.00"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/etBagWeight"
+        app:layout_constraintTop_toTopOf="@id/etBagWeight"
+        app:layout_constraintBottom_toBottomOf="@id/etBagWeight"
+        />
+
+    <Button
+        android:id="@+id/btnAddBag"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:text="Add bag"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/blue"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvBagFee"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalAmountDescription"
+        android:text="Total: $"
+        android:textColor="@color/blue"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="200dp"
+        app:layout_constraintTop_toBottomOf="@id/btnAddBag"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTotalAmount"
+        android:ems="10"
+        android:textSize="24sp"
+        android:text="100.00"
+        android:textColor="@color/blue"
+        app:layout_constraintTop_toTopOf="@id/tvTotalAmountDescription"
+        app:layout_constraintBottom_toBottomOf="@id/tvTotalAmountDescription"
+        app:layout_constraintStart_toEndOf="@id/tvTotalAmount"
+        />
+
+    <Button
+        android:id="@+id/btnPay"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:text="Pay"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/tvTotalAmountDescription"
+        app:layout_constraintStart_toEndOf="@id/tvTotalAmountDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

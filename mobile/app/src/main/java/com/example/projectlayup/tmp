@@ -1,0 +1,151 @@
+package com.example.projectlayup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.Log;
+
+import com.example.projectlayup.models.Bag;
+import com.example.projectlayup.models.Booking;
+import com.example.projectlayup.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    final String TAG = "MainActivity";
+    final String DUMMY_BAG_ID_1 = "tFQD8go7gHDYmSMeEUV2kqJhs";
+    final String DUMMY_BAG_ID_2 = "PWGlySSFX0TRMOHq3etRXe7Ll";
+    List<String> bookingIds;
+    Booking currentBooking;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference bookingsDatabase = database.getReference("Bookings");
+        DatabaseReference usersDatabase = database.getReference("Users");
+        DatabaseReference bagsDatabase = database.getReference("Bags");
+
+        //TODO: Do actual authentication and get signed in user
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        String userId = currentUser.getUid();
+        String userId = "gNbzMJs4uFSeycmbnOsB00uOWtz1";
+
+        //have user input bag id or get from what is saved to their aadvantage profile
+        usersDatabase.child(userId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.isSuccessful()) {
+                    User user = task.getResult().getValue(User.class);
+                    Log.d(TAG, "Connected to database");
+                    if (user != null) {
+
+                        // get list of bags registered to user
+                        // display list as drop
+                        // have option to input id regardless, so
+                        // non-user can input bag id and new user can input
+                        //another bag
+                        List<String> bags = user.getBags();
+                        bookingIds = user.getBookings();
+                    }
+                    else {
+                        // here just so we can get initial data in there. For Actual use, we
+                        // could set it as empty or just do nothing
+                        user.addToBags(DUMMY_BAG_ID_1);
+                        user.addToBags(DUMMY_BAG_ID_2);
+                        usersDatabase.child(userId).setValue(user);
+                    }
+
+                }
+            }
+        });
+
+        // select a particular booking for user, maybe most recent, upcoming one, to mimic what AA currently does
+        currentBooking = new Booking(); // get most recent booking and set that as currentBooking
+
+
+        //at this point we have a bag id. listen for changes & know when to calculate price
+        String bagId = DUMMY_BAG_ID_1; // selected bag
+        db.collection("Bags").document(bagId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "Failed to get bag " + bagId + " from database");
+                    return;
+                }
+                if (value != null && value.exists()) {
+                    Bag bag = value.toObject(Bag.class);
+                    int bagWeight = bag.getCurrentWeightInPounds();
+                    int baggageFee = calculateBaggageFee(currentBooking, bagWeight);
+                    //todo: update total, take user to pay, check out
+                }
+            }
+        });
+
+
+        // update booking info with price and mark as checked in. add seats to db?
+        String confirmationId = "5xWWLRXE49ZYrNcyzGpa";
+//        db.collection("Bookings").document(confirmationId).
+
+
+        // TODO: Connect to databases to get necessary information (bags, weight, bookings)
+//        bookingsDatabase.child(confirmationId).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    // get bookings info.
+//                    // display for user
+//                    Booking booking = task.getResult().getValue(Booking.class);
+//
+//
+//                }
+//                else {
+//                    Log.d(TAG, "Failed to get flight reservation with confirmation number " + confirmationId);
+//                }
+//            }
+//        });
+
+        // update customer count via flight api
+        // get flights data containing list of all flights at concerned airport(origin/dest) for date (flightDate, found in bookingInfo)
+        // get flight info from that, update flight info after we book user
+
+    }
+
+    int calculateBaggageFee(Booking booking, int bagWeight) {
+       int basePrice = currentBooking.getPriceInDollars();
+
+       // TODO: 1 - account for regular (for the different regions)
+        // 2 - account for overweight
+        //  3 - account for oversize
+        // 4 - take special situations(flagship first conserved, people with discounts basically) into consideration
+
+
+
+       return basePrice;
+    }
+}
